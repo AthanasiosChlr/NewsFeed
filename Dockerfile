@@ -21,6 +21,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy application source code
 COPY . /var/www/html
 
+# Debugging: List files in the working directory
+RUN ls -la /var/www/html
+
+# Debugging: Show contents of composer.json
+RUN cat /var/www/html/composer.json
+
 # Install PHP dependencies
 RUN cd /var/www/html && composer install --no-dev --prefer-dist --optimize-autoloader
 

@@ -22,7 +22,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . /var/www/html
 
 # Install PHP dependencies
-RUN composer install --no-dev --prefer-dist --optimize-autoloader
+RUN cd /var/www/html && composer install --no-dev --prefer-dist --optimize-autoloader
 
 # Set permissions for Apache
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html

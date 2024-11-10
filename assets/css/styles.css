@@ -1,0 +1,229 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden; 
+}
+
+body {
+  font-family: "Karla", sans-serif;
+  background-color: #fff;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .card-header {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+body.dark-mode .table {
+  --bs-table-color: #ffffff;
+  --bs-table-bg: #1e1e1e;
+  --bs-table-accent-bg: #2a2a2a;
+  --bs-table-hover-color: #ffffff;
+  --bs-table-hover-bg: #333333;
+  --bs-table-striped-color: #ffffff;
+  --bs-table-striped-bg: #242424;
+  color: var(--bs-table-color);
+  background-color: var(--bs-table-bg);
+}
+
+body.dark-mode .table thead th {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+body.dark-mode .table tbody {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+body.dark-mode .table tbody tr {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
+
+body.dark-mode .table tbody tr:nth-child(even) {
+  background-color: #242424;
+}
+
+.brand-wrapper {
+  margin-bottom: 19px; 
+}
+
+.brand-wrapper .logo {
+  height: 37px; 
+}
+
+.navbar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.navbar-dark.bg-primary.dark-mode,
+.navbar-dark.bg-dark.dark-mode,
+.form-control.dark-mode {
+  background-color: #1c1c1c;
+}
+
+.card.dark-mode {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.card-body.dark-mode {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.card-img-top.fixed-image {
+  height: 350px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  color: #000000;
+  border-right: 0.25px solid #bbbbbb;
+}
+
+.sidebar .nav-link {
+  color: #000000;
+}
+
+.sidebar .nav-link:hover {
+  color: #007bff;
+}
+
+.nav-item {
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  border-bottom: 0.25px solid #bbbbbb;
+}
+
+body.dark-mode .sidebar {
+  background-color: #1c1c1c;
+  color: #ffffff;
+}
+
+body.dark-mode .sidebar .nav-link {
+  color: #ffffff;
+}
+
+body.dark-mode .sidebar .nav-link:hover {
+  color: #007bff;
+}
+
+body.dark-mode .form-control {
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #444444;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #bbbbbb;
+}
+
+body.dark-mode .card {
+  border-color: #bbbbbb;
+}
+
+body.dark-mode .dropdown-menu {
+  background-color: #1c1c1c;
+  color: #ffffff;
+}
+
+body.dark-mode .dropdown-menu .dropdown-item {
+  color: #ffffff;
+}
+
+body.dark-mode .dropdown-menu .dropdown-item:hover {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+body.dark-mode .modal-content {
+  --bs-modal-bg: #1c1c1c;
+  color: #ffffff;
+}
+
+body.dark-mode .modal-header,
+body.dark-mode .modal-footer {
+  border-color: #444444;
+}
+
+body.dark-mode .modal-body {
+  background-color: #1c1c1c;
+  color: #ffffff;
+}
+
+body.dark-mode .navbar-nav .nav-link {
+  color: #ffffff;
+}
+
+.message-content {
+  max-width: 100%;
+  word-wrap: break-word;
+  white-space: pre-wrap; /* Preserve whitespace and wrap text */
+  background-color: #f8f9fa; /* Light background color */
+  border: 1px solid #dee2e6; /* Border color */
+  padding: 10px; /* Padding inside the box */
+  border-radius: 5px; /* Rounded corners */
+  margin-top: 10px; /* Space above the box */
+  overflow-wrap: break-word; /* Ensure long words break */
+  max-width: 600px; /* Set a maximum width for the message box */
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+body.dark-mode .message-content {
+  background-color: #1c1c1c; /* Dark background color */
+  border: 1px solid #444444; /* Dark border color */
+  color: #ffffff; /* Light text color */
+}
+
+body.dark-mode .navbar, 
+body.dark-mode .card, 
+body.dark-mode .table {
+  background-color: #1c1c1c;
+  color: #ffffff;
+}
+
+body.dark-mode .navbar .nav-link,
+body.dark-mode .btn-outline-secondary {
+  color: #ffffff;
+}
+
+body.dark-mode .btn-outline-secondary {
+  border-color: #ffffff;
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+  background-color: #ffffff;
+  color: #121212;
+}
+
+body.dark-mode .dropdown-item {
+  color: #ffffff;
+}
+
+body.dark-mode .dropdown-item:hover {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+body.dark-mode .navbar .navbar-brand {
+  color: #ffffff;
+}

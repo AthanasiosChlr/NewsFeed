@@ -1,0 +1,48 @@
+# Ignore Mac system files
+.DS_Store
+
+# Ignore Composer dependencies
+/vendor/
+/composer.lock
+
+# Ignore environment files
+.env
+
+# Ignore CodeIgniter cache and logs
+application/cache/*
+!application/cache/index.html
+application/logs/*
+!application/logs/index.html
+
+# Ignore CodeIgniter htaccess files
+!application/*/.htaccess
+
+# Ignore test database
+tests/mocks/database/ci_test.sqlite
+
+# Ignore user guide build files
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+
+# Ignore IDE and editor files
+/nbproject/
+.idea/*
+*.sublime-workspace
+*.sublime-project
+
+# Ignore Sublime Text cache files
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# Ignore test results
+/tests/tests/
+/tests/results/
+
+# Ignore node_modules if using Node.js
+/node_modules/
+
+# Ignore other system files
+Thumbs.db

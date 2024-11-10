@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - C:/wamp64/www/newsfeed:/var/www/html
+    ports:
+      - "80:80"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=1234
+      - DB_NAME=newsfeed
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./mysql-config/my.cnf:/etc/mysql/my.cnf
+      - db_data:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: newsfeed
+    ports:
+      - "3306:3306"
+
+volumes:
+  db_data:

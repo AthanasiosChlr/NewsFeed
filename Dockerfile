@@ -9,6 +9,15 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli
 # Enable Apache mod_rewrite (for CodeIgniter)
 RUN a2enmod rewrite
 
+# Set the ServerName directive to suppress the warning
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Configure DirectoryIndex
+RUN echo "<IfModule dir_module>\n    DirectoryIndex index.php index.html\n</IfModule>" >> /etc/apache2/apache2.conf
+
+# Copy application source code
+COPY . /var/www/html
+
 # Set permissions for Apache
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 

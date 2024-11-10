@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - C:/wamp64/www/newsfeed:/var/www/html
+      - ./newsfeed:/var/www/html
     ports:
       - "80:80"
     environment:
@@ -14,6 +14,7 @@ services:
       - DB_USER=root
       - DB_PASS=1234
       - DB_NAME=newsfeed
+      - NEWS_API_KEY=${NEWS_API_KEY}
     depends_on:
       - db
 
@@ -26,6 +27,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: newsfeed
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1234
     ports:
       - "3306:3306"
 

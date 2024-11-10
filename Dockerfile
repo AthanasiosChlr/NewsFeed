@@ -3,8 +3,12 @@ FROM php:8.0-apache
 # Set the working directory in the container
 WORKDIR /var/www/html
 
-# Install required PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql mysqli
+# Install required PHP extensions and other dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    && docker-php-ext-install pdo pdo_mysql mysqli \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache mod_rewrite (for CodeIgniter)
 RUN a2enmod rewrite
@@ -20,6 +24,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy application source code
 COPY . /var/www/html
+
+# Debugging: List files in the working directory
+RUN ls -la /var/www/html
+
+# Debugging: Show contents of composer.json
+RUN cat /var/www/html/composer.json
 
 # Install PHP dependencies
 RUN composer install --no-dev --prefer-dist --optimize-autoloader --working-dir=/var/www/html

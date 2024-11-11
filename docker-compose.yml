@@ -8,10 +8,10 @@ services:
     ports:
       - "80:80"
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - DB_NAME=${DB_NAME}
+      - MYSQL_HOST=${DB_HOST}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASS=${DB_PASS}
+      - MYSQL_DB=${DB_NAME}
       - NEWS_API_KEY=${NEWS_API_KEY}
     depends_on:
       - db

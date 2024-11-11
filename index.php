@@ -290,9 +290,9 @@ define('VIEWPATH', $view_folder . DIRECTORY_SEPARATOR);
 // Load Composer's autoloader
 require_once FCPATH . 'vendor/autoload.php';
 
-// Load environment variables from .env file
+// Load environment variables from .env file if it exists
 $dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
-$dotenv->load();
+$dotenv->safeLoad(); // Use safeLoad to avoid throwing an exception if .env is not found
 
 // CodeIgniter framework bootstrap
 require_once BASEPATH . 'core/CodeIgniter.php';

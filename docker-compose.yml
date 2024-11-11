@@ -8,10 +8,10 @@ services:
     ports:
       - "80:80"
     environment:
-      - MYSQL_HOST=${DB_HOST}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASS=${DB_PASS}
-      - MYSQL_DB=${DB_NAME}
+      - DB_HOST=${MYSQL_HOST}
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASS}
+      - DB_NAME=${MYSQL_DB}
       - NEWS_API_KEY=${NEWS_API_KEY}
     depends_on:
       - db
@@ -22,8 +22,8 @@ services:
       - ./mysql-config/my.cnf:/etc/mysql/my.cnf
       - db_data:/var/lib/mysql
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
-    environment: MYSQL_ROOT_PASSWORD=${DB_PASS}
-      MYSQL_DATABASE=${DB_NAME}
+    environment: MYSQL_ROOT_PASSWORD=${MYSQL_PASS}
+      MYSQL_DATABASE=${MYSQL_DB}
     ports:
       - "3306:3306"
 

@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'   => '',
-	'hostname' => isset($_ENV['DB_HOST']) ? $_ENV['DB_HOST'] : 'localhost',
-	'username' => isset($_ENV['DB_USER']) ? $_ENV['DB_USER'] : 'root',
-	'password' => isset($_ENV['DB_PASS']) ? $_ENV['DB_PASS'] : '',
-	'database' => isset($_ENV['DB_NAME']) ? $_ENV['DB_NAME'] : 'newsfeed',
+	'hostname' => isset($_ENV['MYSQL_HOST']) ? $_ENV['MYSQL_HOST'] : 'db',
+	'username' => isset($_ENV['MYSQL_USER']) ? $_ENV['MYSQL_USER'] : 'root',
+	'password' => isset($_ENV['MYSQL_PASS']) ? $_ENV['MYSQL_PASS'] : '1234',
+	'database' => isset($_ENV['MYSQL_DB']) ? $_ENV['MYSQL_DB'] : 'newsfeed',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

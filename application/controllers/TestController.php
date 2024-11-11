@@ -5,9 +5,6 @@ class TestController extends CI_Controller
 {
     public function index()
     {
-        // Load the database library
-        $this->load->database();
-
         // Get environment variables
         $hostname = isset($_ENV['MYSQL_HOST']) ? $_ENV['MYSQL_HOST'] : 'Not set';
         $username = isset($_ENV['MYSQL_USER']) ? $_ENV['MYSQL_USER'] : 'Not set';
@@ -20,12 +17,15 @@ class TestController extends CI_Controller
         echo 'MYSQL_PASS: ' . $password . '<br>';
         echo 'MYSQL_DB: ' . $database . '<br>';
 
-        // Attempt to connect to the database
-        $mysqli = new mysqli($hostname, $username, $password, $database);
+        // Attempt to connect to the database using mysqli
+        $mysqli = @new mysqli($hostname, $username, $password, $database);
 
         // Check connection
         if ($mysqli->connect_error) {
-            die('Connection failed: ' . $mysqli->connect_error);
+            echo 'Connection failed: ' . $mysqli->connect_error . '<br>';
+            echo 'Error number: ' . $mysqli->connect_errno . '<br>';
+            echo 'Host info: ' . $mysqli->host_info . '<br>';
+            echo 'SQLSTATE: ' . $mysqli->sqlstate . '<br>';
         } else {
             echo 'Connected successfully to the database.';
         }

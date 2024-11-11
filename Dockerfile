@@ -31,8 +31,11 @@ RUN ls -la /var/www/html
 # Debugging: Show contents of composer.json
 RUN cat /var/www/html/composer.json
 
+# Configure Git to allow the directory as a safe directory
+RUN git config --global --add safe.directory /var/www/html
+
 # Install PHP dependencies
-RUN composer install --no-dev --prefer-dist --optimize-autoloader --working-dir=/var/www/html
+RUN composer install --prefer-dist --optimize-autoloader --working-dir=/var/www/html
 
 # Set permissions for Apache
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html

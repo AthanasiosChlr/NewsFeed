@@ -8,10 +8,10 @@ services:
     ports:
       - "80:80"
     environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASS=1234
-      - DB_NAME=newsfeed
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
       - NEWS_API_KEY=${NEWS_API_KEY}
     depends_on:
       - db
@@ -23,8 +23,8 @@ services:
       - db_data:/var/lib/mysql
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: newsfeed
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
     ports:
       - "3306:3306"
 

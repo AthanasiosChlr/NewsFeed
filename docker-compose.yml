@@ -22,7 +22,8 @@ services:
       - ./mysql-config/my.cnf:/etc/mysql/my.cnf
       - db_data:/var/lib/mysql
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
-    environment: MYSQL_ROOT_PASSWORD=${MYSQL_PASS}
+    environment:
+      MYSQL_ROOT_PASSWORD=${MYSQL_PASS}
       MYSQL_DATABASE=${MYSQL_DB}
     ports:
       - "3306:3306"

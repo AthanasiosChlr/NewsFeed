@@ -73,6 +73,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+// Debugging code to print environment variables
+error_log('MYSQL_HOST: ' . (isset($_ENV['MYSQL_HOST']) ? $_ENV['MYSQL_HOST'] : 'Not set'));
+error_log('MYSQL_USER: ' . (isset($_ENV['MYSQL_USER']) ? $_ENV['MYSQL_USER'] : 'Not set'));
+error_log('MYSQL_PASS: ' . (isset($_ENV['MYSQL_PASS']) ? $_ENV['MYSQL_PASS'] : 'Not set'));
+error_log('MYSQL_DB: ' . (isset($_ENV['MYSQL_DB']) ? $_ENV['MYSQL_DB'] : 'Not set'));
+
 $db['default'] = array(
 	'dsn'   => '',
 	'hostname' => isset($_ENV['MYSQL_HOST']) ? $_ENV['MYSQL_HOST'] : 'db',

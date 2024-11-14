@@ -77,6 +77,7 @@ error_log('MYSQL_HOST: ' . (isset($_ENV['MYSQL_HOST']) ? $_ENV['MYSQL_HOST'] : '
 error_log('MYSQL_USER: ' . (isset($_ENV['MYSQL_USER']) ? $_ENV['MYSQL_USER'] : 'Not set'));
 error_log('MYSQL_PASS: ' . (isset($_ENV['MYSQL_PASS']) ? $_ENV['MYSQL_PASS'] : 'Not set'));
 error_log('MYSQL_DB: ' . (isset($_ENV['MYSQL_DB']) ? $_ENV['MYSQL_DB'] : 'Not set'));
+error_log('MYSQL_PORT: ' . (isset($_ENV['MYSQL_PORT']) ? $_ENV['MYSQL_PORT'] : 'Not set'));
 
 $db['default'] = array(
 	'dsn'   => '',
@@ -84,6 +85,7 @@ $db['default'] = array(
 	'username' => isset($_ENV['MYSQL_USER']) ? $_ENV['MYSQL_USER'] : 'root',
 	'password' => isset($_ENV['MYSQL_PASS']) ? $_ENV['MYSQL_PASS'] : '1234',
 	'database' => isset($_ENV['MYSQL_DB']) ? $_ENV['MYSQL_DB'] : 'newsfeed',
+	'port'     => isset($_ENV['MYSQL_PORT']) ? $_ENV['MYSQL_PORT'] : 3306,
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

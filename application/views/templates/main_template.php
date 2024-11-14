@@ -304,7 +304,7 @@
         </div>
         <div class="modal-body">
           <p class="login-card-description">Get a link to reset your password</p>
-          <form method="post" action="<?= base_url('/process') ?>">
+          <form id="resetPasswordForm" method="post">
             <div class="mb-3">
               <label for="reset_email" class="form-label">Email address</label>
               <input type="email" class="form-control" id="reset_email" name="email" required>
@@ -335,6 +335,35 @@
         } else {
           localStorage.setItem('darkMode', 'disabled');
         }
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('resetPasswordForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch('<?= base_url('request_password_reset') ?>', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Password reset link has been sent to your email.');
+            form.reset();
+            $('#resetPasswordModal').modal('hide');
+          } else {
+            alert('Failed to send password reset link. ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
       });
     });
   </script>

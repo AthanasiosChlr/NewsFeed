@@ -2489,3 +2489,17 @@ class CI_Email {
 			: substr($str, $start);
 	}
 }
+
+// Load environment variables from .env file if it exists
+$dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
+$dotenv->safeLoad();
+
+$config['protocol'] = 'smtp';
+$config['smtp_host'] = $_ENV['SMTP_HOST'];
+$config['smtp_port'] = $_ENV['SMTP_PORT'];
+$config['smtp_user'] = $_ENV['SMTP_USER'];
+$config['smtp_pass'] = $_ENV['SMTP_PASS'];
+$config['mailtype'] = 'html';
+$config['charset'] = 'utf-8';
+$config['wordwrap'] = TRUE;
+$config['newline'] = "\r\n";

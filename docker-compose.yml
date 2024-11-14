@@ -14,9 +14,10 @@ services:
       DB_NAME: ${MYSQL_DB}
       DB_PORT: ${MYSQL_PORT}
       NEWS_API_KEY: ${NEWS_API_KEY}
+    volumes:
+      - .:/var/www/html
     depends_on:
       - db
-
   db:
     image: mysql:5.7
     volumes:

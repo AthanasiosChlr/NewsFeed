@@ -14,7 +14,7 @@ class NewsModel extends CI_Model
         }
 
         // Construct the API URL using the API key
-        $api_url = 'https://newsdata.io/api/1/news?apikey=' . $api_key . '&country=us';
+        $api_url = 'ghttps://newsdata.io/api/1/news?apikey=' . $api_key . '&country=us';
 
         // Initialize cURL
         $ch = curl_init();

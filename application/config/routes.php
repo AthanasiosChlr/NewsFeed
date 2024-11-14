@@ -68,6 +68,8 @@ $route['politics'] = 'NewsCategoriesController/politics';
 $route['search'] = 'NewsCategoriesController/search';
 $route['login/verify'] = 'MainController/verify';
 $route['register_user'] = 'MainController/register_user';
+$route['request_password_reset'] = 'PasswordResetController/request_reset';
+$route['reset_password/(:any)'] = 'PasswordResetController/reset_password/$1';
 $route['admin'] = 'AdminController/login';
 $route['admin/verify'] = 'AdminController/admin_login';
 

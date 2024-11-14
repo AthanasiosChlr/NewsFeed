@@ -28,6 +28,16 @@ class UserModel extends CI_Model {
         return $this->db->update('users', $data);
     }
 
+    public function update_password($email, $password) {
+        $data = array(
+            'password' => $password,
+            'reset_token' => null,
+            'token_expiry' => null
+        );
+        $this->db->where('email', $email);
+        return $this->db->update('users', $data);
+    }
+
     public function get_all_users() {
         $query = $this->db->get('users');
         return $query->result();
@@ -36,5 +46,22 @@ class UserModel extends CI_Model {
     public function delete_user($id) {
         $this->db->where('id', $id);
         return $this->db->delete('users');
+    }
+
+    public function store_reset_token($email, $token)
+    {
+        $data = array(
+            'reset_token' => $token,
+            'token_expiry' => date('Y-m-d H:i:s', strtotime('+1 hour'))
+        );
+        $this->db->where('email', $email);
+        $this->db->update('users', $data);
+    }
+
+    public function get_user_by_token($token)
+    {
+        $this->db->where('reset_token', $token);
+        $this->db->where('token_expiry >', date('Y-m-d H:i:s'));
+        return $this->db->get('users')->row();
     }
 }

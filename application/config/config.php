@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+// Load environment variables from .env file if it exists
+$dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
+$dotenv->safeLoad();
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL

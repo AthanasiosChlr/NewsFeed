@@ -8,6 +8,8 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` varchar(20) NOT NULL DEFAULT 'user',
+  `reset_token` varchar(255) NULL,
+  `token_expiry` datetime NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

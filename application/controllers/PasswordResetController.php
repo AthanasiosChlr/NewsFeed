@@ -30,7 +30,6 @@ class PasswordResetController extends CI_Controller
                 $reset_link = base_url('reset_password/' . $token);
                 $message = "<html><head></head><body><p>Hello NewsFeed User,</p><p>Click the following link to reset your password: <a href='$reset_link'>$reset_link</a></p></body></html>";
 
-                // Set SMTP configuration
                 $config = array(
                     'protocol' => 'smtp',
                     'smtp_host' => $_ENV['SMTP_HOST'],
@@ -49,13 +48,8 @@ class PasswordResetController extends CI_Controller
                 $this->email->subject('Password Reset');
                 $this->email->message($message);
 
-                if ($this->email->send()) {
-                    $response = array('success' => true, 'message' => 'Password reset email sent successfully.');
-                } else {
-                    $response = array('success' => false, 'message' => 'Failed to send password reset link.');
-                }
-            } else {
-                $response = array('success' => false, 'message' => 'Email not found.');
+                $this->email->send();
+                $response = array('success' => true, 'message' => 'Password reset email sent successfully.');
             }
         }
 

@@ -3,31 +3,42 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class NewsModel extends CI_Model
 {
-    public function get_latest_news()
-    {
-        // Retrieve the API key from the environment variables
-        $api_key = $_ENV['NEWS_API_KEY'] ?? null;
+    private $api_key;
 
-        if (!$api_key) {
+    public function __construct()
+    {
+        parent::__construct();
+        // Retrieve the API key from the environment variables
+        $this->api_key = $_ENV['NEWS_API_KEY'] ?? null;
+
+        if (!$this->api_key) {
             log_message('error', 'API key is not set in the environment variables.');
+        }
+    }
+
+    public function get_latest_news($category = null, $query = null)
+    {
+        if (!$this->api_key) {
             return array();
         }
 
-        // Construct the API URL using the API key
-        $api_url = 'ghttps://newsdata.io/api/1/news?apikey=' . $api_key . '&country=us';
+        $api_url = 'https://newsdata.io/api/1/news?apikey=' . $this->api_key . '&country=us';
+        if ($category) {
+            $api_url .= '&category=' . urlencode($category);
+        }
+        if ($query) {
+            $api_url .= '&q=' . urlencode($query);
+        }
 
-        // Initialize cURL
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        // Execute cURL request
         $response = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        // Check for errors
         if ($response === FALSE || $http_code !== 200) {
             $error = curl_error($ch);
             log_message('error', 'Failed to fetch news from API: ' . $error);
@@ -35,10 +46,8 @@ class NewsModel extends CI_Model
             return array();
         }
 
-        // Close cURL
         curl_close($ch);
 
-        // Decode the JSON response
         $data = json_decode($response, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {

@@ -50,7 +50,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-$route['testcontroller'] = 'TestController';
 $route['default_controller'] = 'MainController/';
 $route['homepage'] = 'MainController/index';
 $route['technology'] = 'NewsCategoriesController/technology';

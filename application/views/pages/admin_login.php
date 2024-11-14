@@ -1,46 +1,68 @@
-<head>
-  <title>Login</title>
-</head>
+<div class="container"></div>
+<div class="row d-flex justify-content-center align-items-center h-100">
+  <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+    <div class="card shadow-lg custom-card">
+      <div class="card-body p-5 text-center">
+        <h2 class="fw-bold mb-2">Login</h2>
+        <p class="mb-5">Please enter your login and password!</p>
+        <form method="post" action="<?= base_url('/admin/verify') ?>">
+          <div class="form-outline mb-4">
+            <label class="form-label" for="typeEmailX">Email</label>
+            <input type="email" id="typeEmailX" name="email" class="form-control form-control-lg" required />
+          </div>
 
-<body class="container-fluid px-0">
-  <div class="row justify-content-center mx-0">
-    <div class="col-md-11 px-0">
-      <?php if ($this->session->flashdata('error')): ?>
-        <div class="alert alert-danger">
-          <?= $this->session->flashdata('error') ?>
-        </div>
-      <?php endif; ?>
-      <div class="d-flex align-items-center min-vh-100 py-3 py-md-0">
-        <div class="container px-0">
-          <div class="card login-card">
-            <div class="row no-gutters">
-              <div class="col-md-5">
-              </div>
-              <div class="col-md-7">
-                <div class="card-body">
-                  <div class="brand-wrapper d-flex align-items-center mb-2">
-                    <img src="<?= base_url('/assets/images/images.png'); ?>" alt="logo" class="logo mr-3">
-                    <h1 style="margin-top: 6px;">Advisable</h1>
-                  </div>
-                  <p class="login-card-description">Sign into your administrator account</p>
-                  <form method="post" action="<?= base_url('/admin/verify') ?>">
-                    <div class="form-group">
-                      <label for="email" class="sr-only">Email</label>
-                      <input type="email" name="email" id="email" class="form-control" placeholder="Email address">
-                    </div>
-                    <div class="form-group mb-4">
-                      <label for="password" class="sr-only">Password</label>
-                      <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                    </div>
-                    <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Login">
-                  </form>
-                  <a href="<?= base_url('/reset_password') ?>" class="forgot-password-link">Forgot password?</a>
-                </div>
-              </div>
+          <div class="form-outline mb-4">
+            <label class="form-label" for="typePasswordX">Password</label>
+            <div class="input-group">
+              <input type="password" id="typePasswordX" name="password" class="form-control form-control-lg" required />
+              <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                <i class="bi bi-eye"></i>
+              </button>
             </div>
           </div>
-        </div>
+
+          <button class="btn btn-primary btn-lg px-5" type="submit">Login</button>
+        </form>
+
+        <div id="loginError" class="alert alert-danger mt-2" style="display: none;"></div>
       </div>
     </div>
   </div>
-</body>
+</div>
+</div>
+<script>
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    <
+    script >
+      e.preventDefault();
+    var form = e.target;
+    var formData = new FormData(form);
+
+    fetch('<?= base_url('/login/verify') ?>', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          location.reload();
+        } else {
+          var loginError = document.getElementById('loginError');
+          loginError.textContent = data.message;
+          loginError.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  });
+
+  document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordField = document.getElementById('typePasswordX');
+    const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordField.setAttribute('type', passwordFieldType);
+    this.querySelector('i').classList.toggle('bi-eye');
+    this.querySelector('i').classList.toggle('bi-eye-slash');
+  });
+</script>
+</div>

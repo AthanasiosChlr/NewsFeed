@@ -12,6 +12,14 @@ class UserModel extends CI_Model {
         return $query->row();
     }
 
+    //User Registration
+    public function insert_user($data) {
+        if (!$this->db->insert('users', $data)) {
+            throw new Exception('Database error: ' . $this->db->error()['message']);
+        }
+        return true;
+    }
+
     public function get_user_by_id($id) {
         $this->db->where('id', $id);
         $query = $this->db->get('users');

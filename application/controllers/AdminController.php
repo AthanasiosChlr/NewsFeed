@@ -6,35 +6,61 @@ class AdminController extends CI_Controller {
   public function __construct() {
     parent::__construct();
     $this->load->helper(array('form', 'url'));
-    $this->load->library('session');
+    $this->load->library(array('session', 'form_validation'));
     $this->load->database();
     $this->load->model('UserModel');
     $this->load->model('MessagesModel');
-    $this->load->model('LoginModel');
   }
 
-  public function login() {
+  public function showLogin() {
     $data['content'] = 'pages/admin_login'; 
     $this->load->view('templates/main_template', $data);
   }
 
-  public function admin_login() {
-    $email = $this->input->post('email');
-    $password = $this->input->post('password');
-    $user = $this->LoginModel->check_user($email);
+  // Verify user login credentials
+  public function processLogin() {
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+    $this->form_validation->set_rules('password', 'Password', 'required');
 
-    if ($user && password_verify($password, $user->password)&& $user->role == 'admin') {
+    if ($this->form_validation->run() == FALSE) {
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('admin');
+      return;
+    }
+
+    // Retrieve email and password from POST data
+    $email = $this->input->post('email', TRUE);
+    $password = $this->input->post('password', TRUE);
+
+    // Check if user exists in the database
+    $user = $this->UserModel->get_user_by_email($email);
+
+    // Verify password and set session data if valid
+    if ($user && password_verify($password, $user->password)) {
+      // Check if the user is an admin
+      if ($user->role === 'admin') {
+        // Store user data in session
         $this->session->set_userdata('email', $email);
         $this->session->set_userdata('user', $user);
-        redirect('/');
+        redirect('dashboard');
+      } else {
+        $this->session->set_flashdata('error', 'You do not have admin privileges');
+        redirect('admin');
+      }
     } else {
-        $this->session->set_flashdata('error', 'Wrong Credentials');
-        redirect('/admin');
+      $this->session->set_flashdata('error', 'Invalid email or password');
+      redirect('admin');
     }
-}
+  }
+
 
   public function customers() {
     $user = $this->session->userdata('user'); 
+    if (!$user || $user->role != 'admin') {
+      $this->session->set_flashdata('error', 'Access denied');
+      redirect('admin');
+    }
+
     $data['user'] = $user;
     $customers = $this->UserModel->get_all_users();
     $data['customers'] = $customers;
@@ -67,7 +93,7 @@ class AdminController extends CI_Controller {
 
     $data['content'] = 'pages/view_user_messages'; 
     $this->load->view('templates/main_template', $data);
-}
+  }
 
   public function update_customer($id) {
     $first_name = $this->input->post('first_name');
@@ -106,6 +132,12 @@ class AdminController extends CI_Controller {
   }
 
   public function delete_customer($id) {
+    $user = $this->session->userdata('user'); 
+    if (!$user || $user->role != 'admin') {
+      $this->session->set_flashdata('error', 'Access denied');
+      redirect('admin');
+    }
+
     if ($this->UserModel->delete_user($id)) {
       $this->session->set_flashdata('success', 'Customer deleted successfully');
     } else {

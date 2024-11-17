@@ -11,9 +11,7 @@ class NewsCategoriesController extends CI_Controller
         $this->load->helper(array('form', 'url'));
         $this->load->library('session');
         $this->load->database();
-        $this->load->model('LoginModel');
         $this->load->model('UserModel');
-        $this->load->model('RegisterModel');
         $this->load->model('NewsModel');
     }
 
@@ -83,6 +81,7 @@ class NewsCategoriesController extends CI_Controller
 
     public function search()
     {
+        // Get the search query from the GET parameters
         $query = $this->input->get('query');
         $this->load_news_view(null, $query);
     }

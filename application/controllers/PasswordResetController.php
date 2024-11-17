@@ -11,7 +11,7 @@ class PasswordResetController extends CI_Controller
         $this->load->model('UserModel');
     }
 
-    public function request_reset()
+    public function request_password_reset()
     {
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 
@@ -29,19 +29,6 @@ class PasswordResetController extends CI_Controller
 
                 $reset_link = base_url('reset_password/' . $token);
                 $message = "<html><head></head><body><p>Hello NewsFeed User,</p><p>Click the following link to reset your password: <a href='$reset_link'>$reset_link</a></p></body></html>";
-
-                $config = array(
-                    'protocol' => 'smtp',
-                    'smtp_host' => $_ENV['SMTP_HOST'],
-                    'smtp_port' => $_ENV['SMTP_PORT'],
-                    'smtp_user' => $_ENV['SMTP_USER'],
-                    'smtp_pass' => $_ENV['SMTP_PASS'],
-                    'mailtype' => 'html',
-                    'charset' => 'utf-8',
-                    'wordwrap' => TRUE,
-                    'newline' => "\r\n"
-                );
-                $this->email->initialize($config);
 
                 $this->email->from('athanasios.chlr@gmail.com', 'NewsFeed');
                 $this->email->to($email);
@@ -61,14 +48,8 @@ class PasswordResetController extends CI_Controller
         $user = $this->UserModel->get_user_by_token($token);
 
         if ($user) {
-            $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]', array(
-                'required' => 'The %s field is required.',
-                'min_length' => 'The %s field must be at least 8 characters long.'
-            ));
-            $this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'required|matches[password]', array(
-                'required' => 'The %s field is required.',
-                'matches' => 'The %s field does not match the Password field.'
-            ));
+            $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
+            $this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'required|matches[password]');
 
             if ($this->form_validation->run() == FALSE) {
                 $data['token'] = $token;

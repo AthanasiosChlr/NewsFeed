@@ -5,7 +5,14 @@
       <div class="card-body p-5 text-center">
         <h2 class="fw-bold mb-2">Login</h2>
         <p class="mb-5">Please enter your login and password!</p>
-        <form method="post" action="<?= base_url('/admin/verify') ?>">
+
+        <?php if (isset($error) && !empty($error)): ?>
+          <div class="alert alert-danger">
+            <?php echo $error; ?>
+          </div>
+        <?php endif; ?>
+
+        <form id="login-form" method="post" action="<?= base_url('admin/process') ?>">
           <div class="form-outline mb-4">
             <label class="form-label" for="typeEmailX">Email</label>
             <input type="email" id="typeEmailX" name="email" class="form-control form-control-lg" required />
@@ -31,38 +38,11 @@
 </div>
 </div>
 <script>
-  document.getElementById('login-form').addEventListener('submit', function(e) {
-    <
-    script >
-      e.preventDefault();
-    var form = e.target;
-    var formData = new FormData(form);
-
-    fetch('<?= base_url('/login/verify') ?>', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          location.reload();
-        } else {
-          var loginError = document.getElementById('loginError');
-          loginError.textContent = data.message;
-          loginError.style.display = 'block';
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  });
-
-  document.getElementById('togglePassword').addEventListener('click', function() {
+  document.getElementById('togglePassword').addEventListener('click', function () {
     const passwordField = document.getElementById('typePasswordX');
-    const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordField.setAttribute('type', passwordFieldType);
+    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordField.setAttribute('type', type);
     this.querySelector('i').classList.toggle('bi-eye');
     this.querySelector('i').classList.toggle('bi-eye-slash');
   });
 </script>
-</div>

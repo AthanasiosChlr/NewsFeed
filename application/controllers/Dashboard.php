@@ -79,14 +79,12 @@ class Dashboard extends CI_Controller
   {
     $email = $this->session->userdata('email');
     $user = $this->UserModel->get_user_by_email($email);
-    $user = $this->session->userdata('user');
     if (!$user) {
       redirect('');
     }
 
     $data['user'] = $user;
     $data['messages'] = $this->MessagesModel->get_messages_by_recipient($user->email);
-
     $data['content'] = 'pages/messages';
     $this->load->view('templates/main_template', $data);
   }
@@ -110,17 +108,15 @@ class Dashboard extends CI_Controller
 
     $user = $this->UserModel->get_user_by_email($email);
 
-    if (!$user && !$admin) {
+    if (!$user) {
       $this->session->set_flashdata('error', 'Recipient not found');
-      redirect('user_send_message_page');
+      redirect('send_message');
     }
-
-    $recipient = $user ? $user : $admin;
 
     $data = array(
       'recipient_email' => $email,
-      'first_name' => $recipient->first_name,
-      'last_name' => $recipient->last_name,
+      'first_name' => $user->first_name,
+      'last_name' => $user->last_name,
       'message' => $message,
       'sender_email' => $this->session->userdata('email')
     );
@@ -130,7 +126,7 @@ class Dashboard extends CI_Controller
     } else {
       $this->session->set_flashdata('error', 'Failed to send message');
     }
-    redirect('send_message');
+    redirect('messages');
   }
 
   public function delete_message()

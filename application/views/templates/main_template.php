@@ -145,7 +145,7 @@
       var form = e.target;
       var formData = new FormData(form);
 
-      fetch('<?= base_url('/login/verify') ?>', {
+      fetch('<?= base_url('/login/process') ?>', {
           method: 'POST',
           body: formData
         })

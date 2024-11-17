@@ -3,128 +3,116 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class MainController extends CI_Controller
 {
-
-  public function __construct()
-  {
-    parent::__construct();
-    $this->load->helper(array('form', 'url'));
-    $this->load->library('session');
-    $this->load->database();
-    $this->load->model('LoginModel');
-    $this->load->model('UserModel');
-    $this->load->model('RegisterModel');
-    $this->load->model('NewsModel');
-  }
-
-  public function index()
-  {
-    $email = $this->session->userdata('email');
-    $user = $this->session->userdata('user');
-
-    if ($email) {
-      $user = $this->UserModel->get_user_by_email($email);
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->helper(array('form', 'url'));
+        $this->load->library(array('session', 'form_validation'));
+        $this->load->database();
+        $this->load->model('UserModel');
+        $this->load->model('NewsModel');
     }
 
-    $news = $this->NewsModel->get_latest_news();
+    // Homepage load method
+    public function index()
+    {
+        // Get the current user from the session
+        $user = $this->session->userdata('user');
+        $data['email'] = $this->session->userdata('email');
+        $data['user'] = $user;
 
-    $data['user'] = $user;
-    $data['news'] = $news;
+        // Fetch the latest news from NewsModel
+        $news = $this->NewsModel->get_latest_news();
+        $data['news'] = $news;
 
-    $data['content'] = 'pages/homepage';
-    $this->load->view('templates/main_template', $data);
-  }
+        // Set the content view to the homepage
+        $data['content'] = 'pages/homepage';
 
-  public function verify()
-  {
-    $email = $this->input->post('email');
-    $password = $this->input->post('password');
-    $user = $this->LoginModel->check_user($email);
-
-    if ($user && password_verify($password, $user->password)) {
-      $this->session->set_userdata('email', $email);
-      $this->session->set_userdata('user', $user);
-      echo json_encode(['success' => true]);
-    } else {
-      echo json_encode(['success' => false, 'message' => 'Wrong Credentials']);
-    }
-  }
-
-  public function register_user()
-  {
-    $first_name = $this->input->post('first_name');
-    $last_name = $this->input->post('last_name');
-    $email = $this->input->post('email');
-    $password = $this->input->post('password');
-    $retype_password = $this->input->post('retype_password');
-
-    if (empty($first_name) || empty($last_name) || empty($email) || empty($password) || empty($retype_password)) {
-      $response = array('success' => false, 'message' => 'All fields are required');
-      echo json_encode($response);
-      return;
+        // Load the main template view with the data
+        $this->load->view('templates/main_template', $data);
     }
 
-    if ($password !== $retype_password) {
-      $response = array('success' => false, 'message' => 'Passwords do not match');
-      echo json_encode($response);
-      return;
+    // Verify user login credentials
+    public function processLogin()
+    {
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode(['success' => false, 'message' => validation_errors()]);
+            return;
+        }
+
+        // Retrieve email and password from POST data
+        $email = $this->input->post('email', TRUE);
+        $password = $this->input->post('password', TRUE);
+
+        // Check if user exists in the database
+        $user = $this->UserModel->get_user_by_email($email);
+
+        // Verify password and set session data if valid
+        if ($user && password_verify($password, $user->password)) {
+            // Check if the user is an admin
+            if ($user->role === 'admin') {
+                echo json_encode(['success' => false, 'message' => 'Only users can log in']);
+                return;
+            }
+
+            // Store user data in session
+            $this->session->set_userdata('email', $email);
+            $this->session->set_userdata('user', $user);
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Wrong Credentials']);
+        }
     }
 
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    public function register_user()
+    {
+        $this->form_validation->set_rules('first_name', 'First Name', 'required');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+        $this->form_validation->set_rules('retype_password', 'Retype Password', 'required|matches[password]');
 
-    $data = array(
-      'first_name' => $first_name,
-      'last_name' => $last_name,
-      'email' => $email,
-      'password' => $hashed_password
-    );
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode(['success' => false, 'message' => validation_errors()]);
+            return;
+        }
 
-    try {
-      if ($this->RegisterModel->insert_user($data)) {
-        $response = array('success' => true, 'message' => 'Registration successful');
-      } else {
-        $response = array('success' => false, 'message' => 'Registration failed');
-      }
-    } catch (Exception $e) {
-      $db_error = $this->db->error();
-      if (isset($db_error['code']) && $db_error['code'] == 1062) {
-        $response = array('success' => false, 'message' => 'Email already exists');
-      } else {
-        $response = array('success' => false, 'message' => 'An error occurred. Please try again.');
-      }
+        // Retrieve form data from POST
+        $first_name = $this->input->post('first_name', TRUE);
+        $last_name = $this->input->post('last_name', TRUE);
+        $email = $this->input->post('email', TRUE);
+        $password = password_hash($this->input->post('password', TRUE), PASSWORD_BCRYPT);
+
+        $user_data = [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'password' => $password
+        ];
+
+        // Insert user data into the database
+        if ($this->UserModel->insert_user($user_data)) {
+            echo json_encode(['success' => true, 'message' => 'User registered successfully']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to register user']);
+        }
     }
 
-    echo json_encode($response);
-  }
-
-  public function check_email_exists()
-  {
-    $email = $this->input->post('email');
-    $exists = $this->UserModel->email_exists($email);
-    echo json_encode(['exists' => $exists]);
-  }
-  public function get_user_details()
-  {
-    $email = $this->session->userdata('email');
-    if ($email) {
-      $user = $this->UserModel->get_user_by_email($email);
-      echo json_encode(['success' => true, 'user' => $user]);
-    } else {
-      echo json_encode(['success' => false, 'message' => 'User not logged in']);
+    public function logout()
+    {
+        $this->session->unset_userdata('email');
+        $this->session->unset_userdata('user');
+        $this->session->sess_destroy();
+        redirect('/');
     }
-  }
 
-  public function logout()
-  {
-    $this->session->unset_userdata('email');
-    $this->session->unset_userdata('user');
-    $this->session->sess_destroy();
-    redirect('/');
-  }
-
-  public function error_404()
-  {
-    $this->output->set_status_header('404');
-    $data['content'] = 'pages/error_404';
-    $this->load->view('templates/main_template', $data);
-  }
+    public function error_404()
+    {
+        $this->output->set_status_header('404');
+        $data['content'] = 'pages/error_404';
+        $this->load->view('templates/main_template', $data);
+    }
 }

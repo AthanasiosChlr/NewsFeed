@@ -63,7 +63,7 @@
   <!-- Categories Sidebar -->
   <div class="container-fluid">
     <div class="row flex-nowrap">
-      <div class="col-auto col-md-2 col-xl-1 px-sm-1 px-0 sidebar">
+      <div class="col-auto col-md-2 col-xl-1 px-sm-1 px-0 sidebar" style="min-width: 160px;">
         <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-black min-vh-100">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
